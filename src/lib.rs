@@ -4,13 +4,17 @@ use std::{cmp::PartialEq, ops::{Add, Mul, Neg}};
 
 const P: &str = "fffffffffffffffffffffffffffffffffffffffffffffffffffffffeffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
 const R: &str = "3fffffffffffffffffffffffffffffffffffffffffffffffffffffff7cca23e9c44edb49aed63690216cc2728dc58f552378c292ab5844f3";
-const D: &str = "-39081";
+// const D: &str = "-39081";
+const D: &str = "fffffffffffffffffffffffffffffffffffffffffffffffffffffffeffffffffffffffffffffffffffffffffffffffffffffffffffff6756";
 
 // A macro to create a BigInt from a string literal
 #[macro_export]
 macro_rules! bi {
     ($x: literal) => {
         $crate::bi!($x, 10)
+    };
+    ($x: ident) => {
+        num_bigint::BigInt::parse_bytes($x.as_bytes(), 10).unwrap()
     };
     ($x: literal, $base: literal) => {
         num_bigint::BigInt::parse_bytes($x.as_bytes(), $base).unwrap()
@@ -53,7 +57,21 @@ impl Add<Point> for Point {
     type Output = Point;
 
     fn add(self, rhs: Point) -> Point {
-        todo!("Unimplemented")
+        let x1 = self.x;
+        let y1 = self.y;
+        let x2 = rhs.x;
+        let y2 = rhs.y;
+        let num1 = (x1.clone() * y2.clone() + y1.clone() * x2.clone()) % bi!(P);
+        let denom1 = (bi!("1") + bi!(D) * (x1.clone() * x2.clone() * y1.clone() * y2.clone())) % bi!(P);
+        let inv_denom1 = mod_inverse(denom1, bi!(P));
+        let num2 = (y1.clone() * y2.clone() - x1.clone() * x2.clone()) % bi!(P);
+        let denom2 = (bi!("1") - bi!(D) * (x1.clone() * x2.clone() * y1.clone() * y2.clone())) % bi!(P);
+        let inv_denom2 = mod_inverse(denom2, bi!(P));
+
+        Point {
+            x: (num1 * inv_denom1) % bi!(P),
+            y: (num2 * inv_denom2) % bi!(P),
+        }
     }
 }
 

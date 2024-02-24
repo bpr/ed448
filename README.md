@@ -7,7 +7,7 @@ Ed448 Goldilocks elliptic curve implementation, suitable for educational use
 
 ## Features
 - Simple straightforward implementation
-- Piss poor perfornace
+- Piss poor performance
 - Other awesome features yet to be implemented
 ---
 
