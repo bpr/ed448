@@ -1,5 +1,5 @@
 use num_bigint::BigInt;
-use num_traits::{Zero, One};
+use num_traits::Zero;
 use std::{cmp::PartialEq, ops::{Add, Mul, Neg}};
 
 const P: &str = "fffffffffffffffffffffffffffffffffffffffffffffffffffffffeffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
@@ -10,13 +10,10 @@ const D: &str = "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffff
 // A macro to create a BigInt from a string literal
 #[macro_export]
 macro_rules! bi {
-    ($x: literal) => {
+    ($x: expr) => {
         $crate::bi!($x, 10)
     };
-    ($x: ident) => {
-        num_bigint::BigInt::parse_bytes($x.as_bytes(), 10).unwrap()
-    };
-    ($x: literal, $base: literal) => {
+    ($x: expr, $base: literal) => {
         num_bigint::BigInt::parse_bytes($x.as_bytes(), $base).unwrap()
     }
 }
@@ -38,11 +35,11 @@ impl Point {
         Point { x, y }
     }
 
-    pub fn compute_y(x: BigInt) -> BigInt {
+    pub fn compute_y(_x: BigInt) -> BigInt {
         todo!("Unimplemented")
     }
 
-    pub fn from_y_and_lsb_x (y: BigInt, lsb_x: bool) -> Self {
+    pub fn from_y_and_lsb_x (_y: BigInt, _lsb_x: bool) -> Self {
         todo!("Unimplemented")
     }
 }
@@ -90,7 +87,7 @@ impl Neg for Point {
 impl Mul<Point> for BigInt {
     type Output = Point;
 
-    fn mul(self, rhs: Point) -> Point {
+    fn mul(self, _rhs: Point) -> Point {
         todo!("Unimplemented")
     }
 }
