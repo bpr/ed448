@@ -58,16 +58,16 @@ impl Add<Point> for Point {
         let y1 = self.y;
         let x2 = rhs.x;
         let y2 = rhs.y;
-        let num1 = (x1.clone() * y2.clone() + y1.clone() * x2.clone()) % bi!(P);
-        let denom1 = (bi!("1") + bi!(D) * (x1.clone() * x2.clone() * y1.clone() * y2.clone())) % bi!(P);
-        let inv_denom1 = mod_inverse(denom1, bi!(P));
-        let num2 = (y1.clone() * y2.clone() - x1.clone() * x2.clone()) % bi!(P);
-        let denom2 = (bi!("1") - bi!(D) * (x1.clone() * x2.clone() * y1.clone() * y2.clone())) % bi!(P);
-        let inv_denom2 = mod_inverse(denom2, bi!(P));
+        let num1 = (x1.clone() * y2.clone() + y1.clone() * x2.clone()) % bi!(P, 16);
+        let denom1 = (bi!("1") + bi!(D, 16) * (x1.clone() * x2.clone() * y1.clone() * y2.clone())) % bi!(P, 16);
+        let inv_denom1 = mod_inverse(denom1, bi!(P, 16));
+        let num2 = (y1.clone() * y2.clone() - x1.clone() * x2.clone()) % bi!(P, 16);
+        let denom2 = (bi!("1") - bi!(D, 16) * (x1.clone() * x2.clone() * y1.clone() * y2.clone())) % bi!(P, 16);
+        let inv_denom2 = mod_inverse(denom2, bi!(P, 16));
 
         Point {
-            x: (num1 * inv_denom1) % bi!(P),
-            y: (num2 * inv_denom2) % bi!(P),
+            x: (num1 * inv_denom1) % bi!(P, 16),
+            y: (num2 * inv_denom2) % bi!(P, 16),
         }
     }
 }
